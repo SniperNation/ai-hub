@@ -1,11 +1,12 @@
 import google.generativeai as genai
-
-import config
-
+from configparser import ConfigParser
+config = ConfigParser()
+config.read('config.ini')
+GEMINI_API_KEY = config['gemini']['GEMINI_API_KEY']
 
 def get_gemini_pro_response(user_message):
 # Configure the API key
-  api_key=config.GEMINI_API_KEY
+  api_key=GEMINI_API_KEY
   genai.configure(api_key=api_key)
 
   # ... rest of your code to generate response using Gemini ...

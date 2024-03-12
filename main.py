@@ -1,16 +1,13 @@
 # Import libraries
 import tkinter
 from tkinter import Tk, Entry, Text, Button, END, PhotoImage, font, Frame, Radiobutton, StringVar
-import os
-import config
 from get_gemini_pro import get_gemini_pro_response
 from get_gpt_3 import get_gpt3_response
-
+import os
 background_color = "#212121"
 text_color = "white"
 primary_color = "#6F42C1"  # Example accent color
 # Set the API key and the model ID
-os.environ["GENAI_API_KEY"] = config.GEMINI_API_KEY
 # Define the chatbot window
 window = Tk()
 window.title("AI Hub")
@@ -80,16 +77,6 @@ def send_message(current_ai):
   chat_history.config(state="disabled")
   user_input.delete(0, 'end')  # Clear user input field
 
-  # Access the API key from the environment variable
-  api_key = os.environ.get('GENAI_API_KEY')
-
-  # Check if API key is set
-  if not api_key:
-    print("Error: API key not found in environment variable.")
-    chat_history.config(state="normal")
-    chat_history.insert(END, "Error: API key not found.\n")
-    chat_history.config(state="disabled")
-    return  # Exit the function if key is not found
   if current_ai == "gemini-pro":
     gemini_response = get_gemini_pro_response(user_message)  # Call the function to get Gemini response
     chat_history.config(state="normal")
@@ -106,7 +93,9 @@ def send_message(current_ai):
     chat_history.insert(END, f"Error: AI model not supported.\n")
     chat_history.config(state="disabled")
 
-
+# Create a button to trigget the command window to change the API key
+change_api_key_button = Button(window, text="Change API Key", command=lambda: os.system("python change_api_key.py"), bg=background_color, fg=text_color, font=font.Font(family="Google Sans"))
+change_api_key_button.grid(row=1, column=2, padx=10, pady=10)
 # Create a send button to trigger processing
 send_icon = PhotoImage(file="send_icon.png")
 send_button = Button(window, image=send_icon, command=lambda: send_message(current_ai), borderwidth=0, bg=background_color)

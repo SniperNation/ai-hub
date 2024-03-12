@@ -1,8 +1,11 @@
 def get_gpt3_response(user_message):
     # Import necessary libraries (assuming you're using OpenAI API)
     from openai import OpenAI
-    import config
-    client = OpenAI(api_key=config.GPT_3_API_KEY)
+    from configparser import ConfigParser
+    config = ConfigParser()
+    config.read('config.ini')
+    GPT_3_API_KEY = config['gpt']['GPT_3_API_KEY']
+    client = OpenAI(api_key=GPT_3_API_KEY)
 
     messages_list = [{"role": "user", "content": user_message}]
 

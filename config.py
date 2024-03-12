@@ -1,2 +1,0 @@
-GEMINI_API_KEY = "AIzaSyA_-vkQ3xwRpjzeYBbmEH6d7IYpgyxqj_w"
-GPT_3_API_KEY = "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"
