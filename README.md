@@ -3,6 +3,7 @@ AI Hub is an app i made when i was bored to make it easier to access google's Ge
 
 ## Instructions:
 Download/Clone the repo and run main.py
-Add your own API keys in config.py
+
+To change API keys, in the app, click the 'Change API Keys' button and enter the new keys.
 ## Contributions:
 Any PRs are appreciated, I'm trying to learn Tkinter and ai as a student so this is a test project for me.
