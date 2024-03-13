@@ -1,20 +1,22 @@
 # Import libraries
 import tkinter
 from tkinter import Tk, Entry, Text, Button, END, PhotoImage, font, Frame, Radiobutton, StringVar
+
+from change_api_key import open_api_key_window, create_change_api_key_button
 from get_gemini_pro import get_gemini_pro_response
 from get_gpt_3 import get_gpt3_response
-import os
+
 background_color = "#212121"
 text_color = "white"
 primary_color = "#6F42C1"  # Example accent color
 # Set the API key and the model ID
 # Define the chatbot window
-window = Tk()
-window.title("AI Hub")
-window.geometry("1280x720")
-window.configure(bg=background_color)
+root = Tk()
+root.title("AI Hub")
+root.geometry("1280x720")
+root.configure(bg=background_color)
 # Create a frame for the sidebar
-sidebar = Frame(window, width=260, height=605, bg="#36373B")  # Adjust width and height as needed
+sidebar = Frame(root, width=260, height=605, bg="#36373B")  # Adjust width and height as needed
 sidebar.grid(row=0,column=2, padx=10, pady=10)
 
 ai_options = ["ChatGPT", "Gemini"]  # List of AI options
@@ -23,7 +25,7 @@ current_ai = "gemini-pro"  # Default AI model (should match a key in ai_models)
 # Function to change the AI model
 
 # Create a text box to display conversation history
-chat_history = Text(window, height=30, width=97, font=font.Font(family="Google Sans"), bg=background_color, fg=text_color, state="disabled")
+chat_history = Text(root, height=30, width=97, font=font.Font(family="Google Sans"), bg=background_color, fg=text_color, state="disabled")
 chat_history.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
 chat_history.config(state="normal")
 chat_history.insert(END, "Welcome! How can I help you today?\n")
@@ -47,7 +49,7 @@ for option in ai_options:
 
 
 # Create an entry field for user input
-user_input = Entry(window, width=93, font=font.Font(family="Google Sans"),bg=background_color, fg="gray", insertbackground=text_color)
+user_input = Entry(root, width=93, font=font.Font(family="Google Sans"),bg=background_color, fg="gray", insertbackground=text_color)
 user_input.grid(row=1, column=0, padx=10, pady=10)
 
 # Remove the default text when the user clicks on the entry field
@@ -94,12 +96,12 @@ def send_message(current_ai):
     chat_history.config(state="disabled")
 
 # Create a button to trigget the command window to change the API key
-change_api_key_button = Button(window, text="Change API Key", command=lambda: os.system("python change_api_key.py"), bg=background_color, fg=text_color, font=font.Font(family="Google Sans"))
+change_api_key_button = create_change_api_key_button(root, open_api_key_window, font)
 change_api_key_button.grid(row=1, column=2, padx=10, pady=10)
 # Create a send button to trigger processing
 send_icon = PhotoImage(file="send_icon.png")
-send_button = Button(window, image=send_icon, command=lambda: send_message(current_ai), borderwidth=0, bg=background_color)
+send_button = Button(root, image=send_icon, command=lambda: send_message(current_ai), borderwidth=0, bg=background_color)
 send_button.grid(row=1, column=1, padx=10, pady=10)
 
 # Start the main event loop
-window.mainloop()
+root.mainloop()

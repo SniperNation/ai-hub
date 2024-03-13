@@ -1,23 +1,38 @@
-# Change API key in the config file
+from tkinter import Toplevel, Label, Entry, Button
 from configparser import ConfigParser
-config = ConfigParser()
-config.read('config.ini')
-model = input("Enter the model name (gpt or gemini-pro): ")
-if model == "gpt":
-    print("You have chosen GPT-3.")
-    print("Current api key: ", config['gpt']['GPT_3_API_KEY'])
-    gpt_api_key = input("Please enter the api key you'd like to set >>> ")
-    config.set('gpt', 'GPT_3_API_KEY', gpt_api_key)
+background_color = "#212121"
+text_color = "white"
+primary_color = "#6F42C1"  # Example accent color
+def change_api_key(model, entry):
+    config = ConfigParser()
+    config.read('config.ini')
+    new_api_key = entry.get()
+    if model == "gpt":
+        config.set('gpt', 'GPT_3_API_KEY', new_api_key)
+    elif model == "gemini-pro":
+        config.set('gemini', 'GEMINI_API_KEY', new_api_key)
     with open('config.ini', 'w') as configfile:
         config.write(configfile)
-elif model == "gemini-pro":
-    print("You have chosen Gemini Pro.")
-    print("Current api key: ", config['gemini']['GEMINI_API_KEY'])
-    gemini_api_key = input("Please enter the api key you'd like to set >>>")
-    config.set('gemini', 'GEMINI_API_KEY', gemini_api_key)
-    with open('config.ini', 'w') as configfile:
-        config.write(configfile)
-else:
-    print("Invalid model name. Please enter 'gpt' or 'gemini-pro'.")
 
-    pass
+def open_api_key_window(font):
+    api_key_window = Toplevel(bg=background_color)
+    api_key_window.title("Change API Key")
+    api_key_window.geometry("300x200")
+
+    gpt_label = Label(api_key_window, text="ChatGPT API Key:", bg=background_color, fg=text_color, font=font.Font(family="Google Sans"))
+    gpt_label.pack()
+    gpt_entry = Entry(api_key_window, bg=background_color, fg=text_color, insertbackground=text_color, font=font.Font(family="Google Sans"))
+    gpt_entry.pack()
+    gpt_button = Button(api_key_window, text="Change ChatGPT API Key", command=lambda: change_api_key("gpt", gpt_entry), bg=background_color, fg=text_color, font=font.Font(family="Google Sans", size=10))
+    gpt_button.pack(padx=10, pady=10)
+
+    gemini_label = Label(api_key_window, text="Gemini API Key:", bg=background_color, fg=text_color, font=font.Font(family="Google Sans"))
+    gemini_label.pack()
+    gemini_entry = Entry(api_key_window, bg=background_color, fg=text_color, insertbackground=text_color, font=font.Font(family="Google Sans"))
+    gemini_entry.pack()
+    gemini_button = Button(api_key_window, text="Change Gemini API Key", command=lambda: change_api_key("gemini-pro", gemini_entry), bg=background_color, fg=text_color, font=font.Font(family="Google Sans", size=10))
+    gemini_button.pack(padx=10, pady=10)
+
+def create_change_api_key_button(root, open_api_key_window, font):
+    change_api_key_button = Button(root, text="Change API Key", command=lambda: open_api_key_window(font), bg=background_color, fg=text_color, font=font.Font(family="Google Sans"))
+    return change_api_key_button
