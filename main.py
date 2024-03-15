@@ -12,11 +12,10 @@ from tkinter import (
     Radiobutton,
     StringVar,
 )
-
-from change_api_key import open_api_key_window, create_change_api_key_button
+from PIL import Image, ImageTk
 from get_gemini_pro import get_gemini_pro_response
 from get_gpt_3 import get_gpt3_response
-from credits import show_credits_window
+from settings.settings import open_settings_window
 
 background_color = "#212121"
 text_color = "white"
@@ -127,6 +126,12 @@ user_input.bind("<FocusOut>", on_focus_out)
 
 
 # Function to process user input (replace with your AI logic)
+gemini_logo = Image.open("gemini_logo.png")
+gemini_logo = gemini_logo.resize((20, 20), Image.LANCZOS)
+gemini_logo = ImageTk.PhotoImage(gemini_logo)
+gpt_logo = Image.open("ChatGPT_logo.png")
+gpt_logo = gpt_logo.resize((20, 20), Image.LANCZOS)
+gpt_logo = ImageTk.PhotoImage(gpt_logo)
 def send_message(current_ai):
     user_message = user_input.get()
     chat_history.config(state="normal")
@@ -139,12 +144,14 @@ def send_message(current_ai):
             user_message
         )  # Call the function to get Gemini response
         chat_history.config(state="normal")
+        chat_history.image_create(END, image=gemini_logo)
         chat_history.insert(END, f"Bot (Gemini): {gemini_response}\n")
         chat_history.config(state="disabled")
     elif current_ai == "gpt":
         gpt3_response = get_gpt3_response(
             user_message
         )  # Call the function to get GPT-3 response
+        chat_history.image_create(END, image=gpt_logo)
         chat_history.config(state="normal")
         chat_history.insert(END, f"Bot (GPT-3): {gpt3_response}\n")
         chat_history.config(state="disabled")
@@ -154,29 +161,29 @@ def send_message(current_ai):
         chat_history.insert(END, f"Error: AI model not supported.\n")
         chat_history.config(state="disabled")
 
-
-# Create a button to trigger the command window to change the API key
-change_api_key_button = create_change_api_key_button(root, open_api_key_window, font)
-change_api_key_button.grid(row=1, column=2, padx=10, pady=10)
-
 # Create a button to show the credits window
-credits_button = Button(
+settings_icon = PhotoImage(file="settings_icon.png")
+settings_button = Button(
     root,
-    text="Credits",
-    command=show_credits_window,
+    text="Settings",
+    command=open_settings_window,
     bg=background_color,
     fg=text_color,
     font=font.Font(family="Google Sans"),
+    activebackground=background_color,
+    image = settings_icon,
+    compound="left"
 )
-credits_button.grid(row=2, column=2, padx=50, pady=10)
+settings_button.grid(row=1, column=2, padx=50, pady=10)
 # Create a send button to trigger processing
-send_icon = PhotoImage(file="send_icon.png")
+send_icon = PhotoImage(file="send_message_icon.png")
 send_button = Button(
     root,
-    image=send_icon,
+    image= send_icon,
     command=lambda: send_message(current_ai),
     borderwidth=0,
     bg=background_color,
+    activebackground=background_color,
 )
 send_button.grid(row=1, column=1, padx=10, pady=10)
 

@@ -1,4 +1,4 @@
-from tkinter import Toplevel, Label, Entry, Button
+from tkinter import Toplevel, Label, Entry, Button, font
 from configparser import ConfigParser
 
 background_color = "#212121"
@@ -14,11 +14,11 @@ def change_api_key(model, entry):
         config.set("gpt", "GPT_3_API_KEY", new_api_key)
     elif model == "gemini-pro":
         config.set("gemini", "GEMINI_API_KEY", new_api_key)
-    with open("config.ini", "w") as configfile:
+    with open("../config.ini", "w") as configfile:
         config.write(configfile)
 
 
-def open_api_key_window(font):
+def open_api_key_window():
     api_key_window = Toplevel(bg=background_color)
     api_key_window.title("Change API Key")
     api_key_window.geometry("300x200")
