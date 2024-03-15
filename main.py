@@ -127,7 +127,7 @@ user_input.bind("<FocusOut>", on_focus_out)
 
 # Function to process user input (replace with your AI logic)
 gemini_logo = Image.open("gemini_logo.png")
-gemini_logo = gemini_logo.resize((20, 20), Image.LANCZOS)
+gemini_logo = gemini_logo.resize((30, 30), Image.LANCZOS)
 gemini_logo = ImageTk.PhotoImage(gemini_logo)
 gpt_logo = Image.open("ChatGPT_logo.png")
 gpt_logo = gpt_logo.resize((20, 20), Image.LANCZOS)
@@ -145,7 +145,7 @@ def send_message(current_ai):
         )  # Call the function to get Gemini response
         chat_history.config(state="normal")
         chat_history.image_create(END, image=gemini_logo)
-        chat_history.insert(END, f"Bot (Gemini): {gemini_response}\n")
+        chat_history.insert(END, f"{gemini_response}\n")
         chat_history.config(state="disabled")
     elif current_ai == "gpt":
         gpt3_response = get_gpt3_response(
@@ -153,7 +153,7 @@ def send_message(current_ai):
         )  # Call the function to get GPT-3 response
         chat_history.image_create(END, image=gpt_logo)
         chat_history.config(state="normal")
-        chat_history.insert(END, f"Bot (GPT-3): {gpt3_response}\n")
+        chat_history.insert(END, f"{gpt3_response}\n")
         chat_history.config(state="disabled")
     else:
         print(f"Error: Unknown AI model: {current_ai}")
