@@ -1,5 +1,6 @@
 # Import libraries
 import tkinter
+import configparser
 from tkinter import (
     Tk,
     Entry,
@@ -17,9 +18,18 @@ from get_gemini_pro import get_gemini_pro_response
 from get_gpt_3 import get_gpt3_response
 from settings.settings import open_settings_window
 
-background_color = "#212121"
-text_color = "white"
-primary_color = "#6F42C1"  # Example accent color
+# Theme
+config = configparser.ConfigParser()
+config.read("preferences.ini")
+theme = config.get("Preferences", "theme").strip('"')
+if theme == "dark":
+    background_color = config.get("Preferences", "background_color").strip('"')
+    text_color = config.get("Preferences", "text_color").strip('"')
+    primary_color = config.get("Preferences", "primary_color").strip('"')
+elif theme == "light":
+    background_color = config.get("Preferences", "light_background_color").strip('"')
+    text_color = config.get("Preferences", "light_text_color").strip('"')
+    primary_color = config.get("Preferences", "light_primary_color").strip('"')
 # Set the API key and the model ID
 # Define the chatbot window
 root = Tk()
@@ -126,12 +136,14 @@ user_input.bind("<FocusOut>", on_focus_out)
 
 
 # Function to process user input (replace with your AI logic)
-gemini_logo = Image.open("gemini_logo.png")
+gemini_logo = Image.open("resources/gemini_logo.png")
 gemini_logo = gemini_logo.resize((30, 30), Image.LANCZOS)
 gemini_logo = ImageTk.PhotoImage(gemini_logo)
-gpt_logo = Image.open("ChatGPT_logo.png")
+gpt_logo = Image.open("resources/ChatGPT_logo.png")
 gpt_logo = gpt_logo.resize((20, 20), Image.LANCZOS)
 gpt_logo = ImageTk.PhotoImage(gpt_logo)
+
+
 def send_message(current_ai):
     user_message = user_input.get()
     chat_history.config(state="normal")
@@ -161,8 +173,13 @@ def send_message(current_ai):
         chat_history.insert(END, f"Error: AI model not supported.\n")
         chat_history.config(state="disabled")
 
+
 # Create a button to show the credits window
-settings_icon = PhotoImage(file="settings_icon.png")
+settings_icon = (
+    PhotoImage(file="resources/settings_icon.png")
+    if theme == "dark"
+    else PhotoImage(file="resources/light_settings_icon.png")
+)
 settings_button = Button(
     root,
     text="Settings",
@@ -171,15 +188,19 @@ settings_button = Button(
     fg=text_color,
     font=font.Font(family="Google Sans"),
     activebackground=background_color,
-    image = settings_icon,
-    compound="left"
+    image=settings_icon,
+    compound="left",
 )
 settings_button.grid(row=1, column=2, padx=50, pady=10)
 # Create a send button to trigger processing
-send_icon = PhotoImage(file="send_message_icon.png")
+send_icon = (
+    PhotoImage(file="resources/send_message_icon.png")
+    if theme == "dark"
+    else PhotoImage(file="resources/light_send_message_icon.png")
+)
 send_button = Button(
     root,
-    image= send_icon,
+    image=send_icon,
     command=lambda: send_message(current_ai),
     borderwidth=0,
     bg=background_color,

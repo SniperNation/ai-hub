@@ -1,9 +1,18 @@
+import configparser
 from tkinter import Toplevel, Label, Entry, Button, font
 from configparser import ConfigParser
 
-background_color = "#212121"
-text_color = "white"
-primary_color = "#6F42C1"  # Example accent color
+config = configparser.ConfigParser()
+config.read("preferences.ini")
+theme = config.get("Preferences", "theme").strip('"')
+if theme == "dark":
+    background_color = config.get("Preferences", "background_color").strip('"')
+    text_color = config.get("Preferences", "text_color").strip('"')
+    primary_color = config.get("Preferences", "primary_color").strip('"')
+elif theme == "light":
+    background_color = config.get("Preferences", "light_background_color").strip('"')
+    text_color = config.get("Preferences", "light_text_color").strip('"')
+    primary_color = config.get("Preferences", "light_primary_color").strip('"')
 
 
 def change_api_key(model, entry):
